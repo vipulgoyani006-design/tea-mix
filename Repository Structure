@@ -1,0 +1,14 @@
+tea-mix/
+│
+├── app.py                # Flask backend
+├── requirements.txt      # Python dependencies
+├── README.md             # Project description
+├── database/
+│   └── tea.db            # SQLite database (empty at start)
+├── templates/
+│   └── index.html        # Web page
+└── static/
+    ├── css/
+    │   └── style.css
+    └── js/
+        └── app.js        # Optional JS if separate
