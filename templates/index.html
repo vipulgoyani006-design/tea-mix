@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tea Mix Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Tea Mix Generator</h1>
+    <h3>Select Ingredients:</h3>
+    <form id="teaForm">
+        {% for ing in ingredients %}
+        <input type="checkbox" name="ingredient" value="{{ ing }}"> {{ ing }} <br>
+        {% endfor %}
+        <button type="submit">Create Combinations</button>
+    </form>
+
+    <h3>Tea Variants:</h3>
+    <ul id="variantsList"></ul>
+
+    <script>
+        const form = document.getElementById("teaForm");
+        const list = document.getElementById("variantsList");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const selected = Array.from(form.querySelectorAll('input[name="ingredient"]:checked'))
+                                  .map(el => el.value);
+            const response = await fetch("/create", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ingredients: selected})
+            });
+            const data = await response.json();
+            list.innerHTML = "";
+            data.variants.forEach(v => {
+                const li = document.createElement("li");
+                li.textContent = `${v.name} -> Ingredients: ${v.ingredients}`;
+                list.appendChild(li);
+            });
+        });
+    </script>
+</body>
+</html>
